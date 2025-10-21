@@ -22,6 +22,3 @@ export async function getHealthStatus(req, res) {
 	 }
 }
 
-async function adddb (req,res){
-
-}
