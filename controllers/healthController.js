@@ -2,10 +2,8 @@ import { initializeDatabaseConnection, sequelize } from '../config/db.js';
 
 // GET /health - Simple health check
 export async function getHealthStatus(req, res) {
-	console.log('fuck')
 	 try {
-		 // Test database connection
-		 await initializeDatabaseConnection()
+		 await sequelize.authenticate()
 		 console.log("running goodly")
 		 res.status(200).json({
 			 status: 'healthy',

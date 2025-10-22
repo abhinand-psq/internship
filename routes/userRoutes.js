@@ -13,9 +13,8 @@ const router = express.Router();
 
 // Public route
 router.post('/login', login);
-
-// Protected routes
 router.post('/users', createUser);
+// Protected routes
 router.get('/users', auth, getUsers);
 router.get('/users/:id', auth, getUserById);
 router.put('/users/:id', auth, updateUser);

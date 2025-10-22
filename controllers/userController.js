@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import User from '../models/user.js';
+import { sequelize } from '../config/db.js';
 
 dotenv.config();
 
@@ -13,13 +14,12 @@ async function login(req, res) {
 			 return res.status(400).json({ message: 'name, email and password are required' });
 		 }
 		 
-		 // Find user by email and name
 		 const user = await User.findOne({ where: { email, name } });
 		 if (!user) {
 			 return res.status(404).json({ message: 'No such user' });
 		 }
 		 
-		 // Compare password
+		
 		 const isPasswordValid = await bcrypt.compare(password, user.password);
 		 if (!isPasswordValid) {
 			 return res.status(401).json({ message: 'Password incorrect' });
@@ -34,19 +34,24 @@ async function login(req, res) {
 
 // POST /api/users
 async function createUser(req, res) {
+	await sequelize.sync({ alter: true });
 	 try {
 		 const { name, email, password } = req.body || {};
+		 console.log(name,email,password);
+		 
+		 
 		 if (!name || !email || !password) {
 			 return res.status(400).json({ message: 'name, email and password are required' });
 		 }
 		 
-		 // Check if user already exists
-		 const existingUser = await User.findOne({ where: { email } });
+		 
+		 
+		 const existingUser = await User.findOne({ where: { email:email } });
 		 if (existingUser) {
 			 return res.status(409).json({ message: 'User already exists' });
 		 }
-		 
-		 // Hash the password
+		 console.log("reached here");
+	
 		 const saltRounds = 10;
 		 const hashedPassword = await bcrypt.hash(password, saltRounds);
 		 
@@ -61,7 +66,7 @@ async function createUser(req, res) {
 		 if (err?.name === 'SequelizeUniqueConstraintError') {
 			 return res.status(409).json({ message: 'Email already exists' });
 		 }
-		 return res.status(500).json({ message: 'Failed to create user' });
+		 return res.status(500).json({ message: err.message });
 	 }
 }
 
@@ -69,7 +74,7 @@ async function createUser(req, res) {
 async function getUsers(req, res) {
 	 try {
 		 const users = await User.findAll({
-			 attributes: { exclude: ['password'] } // Exclude password from response
+			 attributes: { exclude: ['password'] } 
 		 });
 		 return res.status(200).json(users);
 	 } catch (_err) {
@@ -82,7 +87,7 @@ async function getUserById(req, res) {
 	 try {
 		 const { id } = req.params;
 		 const user = await User.findByPk(id, {
-			 attributes: { exclude: ['password'] } // Exclude password from response
+			 attributes: { exclude: ['password'] } 
 		 });
 		 if (!user) {
 			 return res.status(404).json({ message: 'User not found' });
@@ -106,7 +111,7 @@ async function updateUser(req, res) {
 		 if (email !== undefined) user.email = email;
 		 await user.save();
 		 
-		 // Return user without password
+		
 		 const userResponse = {
 			 id: user.id,
 			 name: user.name,
@@ -129,12 +134,12 @@ async function deleteUser(req, res) {
 		 const { id } = req.params;
 		 const user = await User.findByPk(id);
 		 if (!user) {
-			 return res.status(404).json({ message: 'User not found' });
+			 return res.status(404).json({ message: 'User not found 0' });
 		 }
 		 await user.destroy();
-		 return res.status(204).send();
-	 } catch (_err) {
-		 return res.status(500).json({ message: 'Failed to delete user' });
+		 return res.status(200).json({message:`user deleted successfully`});
+	 } catch (err) {
+		 return res.status(500).json({ message: `Failed to delete user ${err}` });
 	 }
 }
 
