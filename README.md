@@ -58,7 +58,7 @@ Use:
  6. Delete User
 Method: DELETE  
 Endpoint: /api/:id  
-Full URL: https://internship-t0dz.onrender.com/api/:id  
+Full URL: https://internship-t0dz.onrender.com/api/users/:id
 Use:  
   Deletes a user by their unique ID.
 
