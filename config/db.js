@@ -2,7 +2,7 @@ import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const sequelize = new Sequelize('postgresql://postgres:abhinand@localhost:5432/usercreation');
+const sequelize = new Sequelize(process.env.DB_CONNECTION_STRING);
 
 async function initializeDatabaseConnection() {
 	 try {
