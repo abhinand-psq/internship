@@ -1,4 +1,3 @@
-
 import { Sequelize } from '@sequelize/core';
 import { PostgresDialect } from '@sequelize/postgres';
 import dotenv from 'dotenv';
