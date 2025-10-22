@@ -14,7 +14,10 @@ app.use(cookie())
 // app.get('/hello', (req, res) => {
 // 	res.json({ message: 'Hello World! Server is working!' });
 // });
-
+app.use((req,res,next)=>{
+    console.log("new git");
+    next()
+})
 app.use('/', healthRoutes);
 app.use('/api', userRoutes);
 
