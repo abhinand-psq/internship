@@ -4,6 +4,7 @@ import { initializeDatabaseConnection, sequelize } from '../config/db.js';
 export async function getHealthStatus(req, res) {
 	 try {
 		 await sequelize.authenticate()
+		 await sequelize.sync({ alter: true });
 		 console.log("running goodly")
 		 res.status(200).json({
 			 status: 'healthy',

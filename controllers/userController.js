@@ -78,7 +78,7 @@ async function getUsers(req, res) {
 		 });
 		 return res.status(200).json(users);
 	 } catch (_err) {
-		 return res.status(500).json({ message: 'Failed to fetch users' });
+		 return res.status(500).json({ message: _err });
 	 }
 }
 

@@ -23,9 +23,11 @@ const User = sequelize.define('User', {
 		 type: DataTypes.STRING,
 		 allowNull: false,
 	 },
-}, {
-	 tableName: 'users',
-	 timestamps: true,
+},  {
+  tableName: 'users',
+  timestamps: true,
+  createdAt: 'created_at',   // map Sequelize createdAt to your column
+  updatedAt: 'updated_at',   // map Sequelize updatedAt to your column
 });
 
 export default User;
