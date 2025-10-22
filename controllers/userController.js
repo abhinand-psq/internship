@@ -76,7 +76,7 @@ async function getUsers(req, res) {
 		 const users = await User.findAll({
 			 attributes: { exclude: ['password'] } 
 		 });
-		 return res.status(200).json(users);
+		 return res.status(201).json(users);
 	 } catch (_err) {
 		 return res.status(500).json({ message: 'Failed to fetch users' });
 	 }
